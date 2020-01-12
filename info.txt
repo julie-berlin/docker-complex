@@ -1,0 +1,31 @@
+
+cd into client directory:
+docker build -f Dockerfile.dev .
+
+after all built...
+docker run <id>
+
+docker-compose up
+
+docker-compose up --build
+
+
+
+single container setup
+1. push code to github
+2. travis pulls repo
+3. travis builds image and tests
+4. travis pushes code to AWS
+5. EB builds image, deploys
+
+multi-container
+1. push code to github
+2. travis pulls repo
+3. travis builds test image and tests code
+4. travis builds prod images
+5. travis pushes built prod images to docker hub
+6. travis pushes prod to AWS
+7. EB pulls images from dockerhub and deploys
+
+EB won't build image
+
