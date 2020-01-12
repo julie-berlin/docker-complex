@@ -1,0 +1,22 @@
+sudo: required
+language: generic
+services: 
+  - docker
+before_install:
+  - docker build -t jkwb/react-test -f ./client/Dockerfile.dev ./client
+script:
+  - docker run -e CI=true jkwb/react-test npm test
+after_success:
+  # build prod images
+  - docker build -t jkwb/complex-client ./client
+  - docker build -t jkwb/complex-nginx ./nginx
+  - docker build -t jkwb/complex-server ./server
+  - docker build -t jkwb/complex-worker ./worker
+  # log in to docker cli
+  - echo "$DOCKER_PW" | docker login -u "$DOCKER_ID" --password-stdin
+  # push built images to docker hub
+  - docker push jkwb/complex-client
+  - docker push jkwb/complex-nginx
+  - docker push jkwb/complex-server
+  - docker push jkwb/complex-worker
+
